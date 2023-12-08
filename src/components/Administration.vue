@@ -19,14 +19,8 @@
 </template>
 
 <script>
-import EventsHeaderItem from '@/components/header/EventsHeaderItem.vue';
-import RecommendationsHeaderItem from '@/components/header/RecommendationsHeaderItem.vue';
-import ProfileHeaderItem from '@/components/header/ProfileHeaderItem.vue';
-
 export default {
-  components: {
-    EventsHeaderItem, RecommendationsHeaderItem, ProfileHeaderItem
-  }
+  name: 'Administration'
 }
 </script>
 

@@ -11,7 +11,7 @@
   <div class="concert-container">
     <div class="concert-poster-container">
       <div>
-        <img id="concert-poster" :src="require(`@/../images/posters/${event.posterFile}`)">
+        <img id="concert-poster" :src="posterLocation">
       </div>
 
       <rating :mark="event.mark" @onMarkChange="onMarkChange"/>
@@ -35,17 +35,22 @@
 </template>
 
 <script>
-import Rating from '@/components/Rating.vue';
-import Comments from '@/components/Comments.vue';
+import Rating from '@/components/ui-components/Rating.vue';
+import Comments from '@/components/ui-components/Comments.vue';
 import axios from 'axios';
 
 export default {
+  name: 'EventInfo',
   components: {
     Comments, Rating
   },
+  computed: {
+    eventId() {
+      return this.$route.params.id
+    },
+  },
   data() {
     return {
-      eventId: 1,
       event: {
         eventName: '',
         date: '',
@@ -57,7 +62,8 @@ export default {
         willGo: '',
         eventComments: []
       },
-      commentText: ''
+      commentText: '',
+      posterLocation: ''
     }
   },
   methods: {
@@ -80,6 +86,7 @@ export default {
         .get(`http://localhost:9000/api/events/${this.eventId}`)
         .then((response) => {
           this.event = response.data;
+          this.posterLocation = require(`@/../images/posters/${this.event.posterFile}`);
         })
         .catch((e) => {
           console.log(`Error: ${JSON.stringify(e)}`);

@@ -4,7 +4,7 @@
       <div class="comments-title">
         <h1>Комментарии</h1>
       </div>
-      <comment v-for="comment in eventComments" :comment="comment"/>
+      <comment v-for="comment in eventComments" :comment="comment" :key="comment.id"/>
     </div>
 
     <div class="send-comment-form col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Comment from '@/components/Comment.vue';
+import Comment from '@/components/ui-components/Comment.vue';
 export default {
   components: {
     Comment

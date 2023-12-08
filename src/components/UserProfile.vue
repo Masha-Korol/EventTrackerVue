@@ -5,12 +5,8 @@
         Профиль: {{userInfo.userName}}
       </text>
     </div>
-    <div class="menu-container">
-      <div class="header-item-text"><a href="../concerts-page/concerts.html">Концерты</a></div>
-    </div>
-    <div class="menu-container">
-      <div class="header-item-text"><a href="../recommendations-page/recommendations.html">Рекомендации</a></div>
-    </div>
+    <events-header-item/>
+    <recommendations-header-item/>
   </div>
 
   <div class="profile-container">
@@ -18,10 +14,7 @@
       <div class="profile-detail-container-title">
         Мероприятия
       </div>
-      <div class="concert-block" v-for="event in userInfo.userEvents">
-        <div>{{event.eventName}} - {{event.city}}</div>
-        <div>{{event.date}}</div>
-      </div>
+      <event-text-info v-for="event in userInfo.userEvents" :event="event" :key="event.id"/>
     </div>
 
     <div id="buttons" class="buttons-container">
@@ -34,25 +27,33 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+import EventTextInfo from '@/components/events/EventTextInfo.vue';
 
 export default {
+  components: {
+    EventTextInfo
+  },
+  computed: {
+    userId() {
+      return this.$route.params.id
+    },
+  },
   data() {
     return {
-      userName: 'someOtherUser',
       isCurrentUsersPage: false,
       userInfo: {}
     }
   },
   methods: {
     onSendFriendRequest() {
-      axios.patch(`http://localhost:9000/api/users`, {userName: this.userName});
+      axios.patch(`http://localhost:9000/api/users`, {userId: this.userId});
       this.userInfo.isUserFriend = !this.userInfo.isUserFriend;
     }
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/users/${this.userName}`)
+        .get(`http://localhost:9000/api/users/${this.userId}`)
         .then((response) => {
           this.userInfo = response.data;
         })

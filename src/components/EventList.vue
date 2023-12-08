@@ -22,15 +22,16 @@
   </div>
 
   <div id="concerts-container" class="concerts-container">
-    <concert-preview v-for="event in events" :event="event"/>
+    <concert-preview v-for="event in events" :event="event" :key="event.id" />
   </div>
 </template>
 
 <script>
-import ConcertPreview from '@/components/ConcertPreview.vue';
+import ConcertPreview from '@/components/events/ConcertPreview.vue';
 import axios from 'axios';
 
 export default {
+  name: 'EventList',
   components: {
     ConcertPreview
   },

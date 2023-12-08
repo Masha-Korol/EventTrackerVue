@@ -1,5 +1,5 @@
 <template>
-  <div class="friend-block">
+  <div class="friend-block" @click="this.$router.push({name: 'UserProfile', params: { id: this.friend.id}})">
     <div class="friend-block-username">{{friend.userName}}</div>
   </div>
 </template>

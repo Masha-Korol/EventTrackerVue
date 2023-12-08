@@ -1,5 +1,5 @@
 <template>
-  <div class="concert-block">
+  <div class="concert-block" @click="this.$router.push({name: 'EventInfo', params: { id: this.event.id}})">
     <img :src="require(`@/../images/posters/${event.posterFile}`)">
   </div>
 </template>

@@ -3,29 +3,15 @@
     <div class="title-container">
       <text class="title-text">EventTracker</text>
     </div>
-    <div class="menu-container">
-      <div class="header-item-text"><a href="../concerts-page/concerts.html">Мероприятия</a></div>
-      <div class="header-item-text"><a href="../recommendations-page/recommendations.html">Рекомендации</a></div>
-    </div>
-    <div class="profile-menu-container">
-      <text class="header-item-text profile-text"><a href="../profile-page/profile.html">Профиль</a></text>
-    </div>
+    <events-header-item/>
+    <recommendations-header-item/>
+    <profile-header-item/>
   </div>
 
   <div id="chat-container" class="chat-container">
     <div class="chat">
       <div class="messages-window">
-        <div class="message-block" v-for="message in chat.messages"
-             v-bind:class="isCurrentUserAuthor(message.userName) ? 'message-block-owner' : 'message-block-other'">
-          <div class="message-text"
-               v-bind:class="isCurrentUserAuthor(message.userName) ? 'message-text-owner' : 'message-text-other'">
-            <div>{{message.text}}</div>
-            <div class="author" v-if="!isCurrentUserAuthor(message.userName)">
-              <p>{{message.userName}}</p>
-            </div>
-          </div>
-          <div class="date"><p class="date-text">{{message.date}}</p></div>
-        </div>
+        <chat-message v-for="message in chat.messages" :message="message" :key="message.id" />
       </div>
 
       <div class="send-message-window">
@@ -47,22 +33,25 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+import ChatMessage from '@/components/users/ChatMessage.vue';
 
 export default {
+  name: 'Chat',
+  components: {
+    ChatMessage
+  },
+  computed: {
+    chatId() {
+      return this.$route.params.id
+    },
+  },
   data() {
     return {
-      chatId: 1,
       chat: {}
     }
   },
   methods: {
-    isCurrentUserAuthor(userName) {
-      return this.getCurrentUserName() === userName;
-    },
-    getCurrentUserName() {
-      return 'Maria';
-    }
   },
   created() {
     axios
@@ -94,60 +83,6 @@ export default {
   border-radius: 5px;
   height: 90%;
   width: 50%;
-}
-
-/* messages window */
-
-.message-block {
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-}
-
-.message-block-other {
-  align-self: flex-start;
-}
-
-.message-block-owner {
-  align-self: flex-end;
-}
-
-.message-text {
-  display: flex;
-  flex-direction: column;
-  margin: 2px;
-  padding: 15px;
-  border-radius: 5px;
-  font-size: 20px;
-}
-
-.message-text-other {
-  background-color: deepskyblue;
-}
-
-.message-text-owner {
-  background-color: #e9e9e9;
-}
-
-.date {
-  align-self: flex-end;
-}
-
-.date-text {
-  font-size: 10px;
-  color: white;
-  font-size: 15px;
-}
-
-.author {
-  align-self: flex-start;
-  height: 12px;
-  margin: 2px;
-  font-size: 14px;
-}
-
-.author-text {
-  font-size: 13px;
 }
 
 /* send message window */

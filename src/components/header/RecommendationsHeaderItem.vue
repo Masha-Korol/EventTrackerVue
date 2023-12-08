@@ -1,6 +1,8 @@
 <template>
   <div class="menu-container">
-    <div class="header-item-text"><a href="../recommendations-page/recommendations.html">Рекомендации</a></div>
+    <div class="header-item-text">
+      <router-link to="/recommendations">Рекомендации</router-link>
+    </div>
   </div>
 </template>
 

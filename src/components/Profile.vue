@@ -16,14 +16,14 @@
       <div class="profile-detail-container-title">
         Мероприятия
       </div>
-     <event-text-info v-for="event in userInfo.userEvents" :event="event"/>
+     <event-text-info v-for="event in userInfo.userEvents" :event="event" :key="event.id" />
     </div>
 
     <div id="profile-detail-chats" class="profile-detail-container" v-if="this.isChatsBlockVisible">
       <div class="profile-detail-container-title">
         Сообщения
       </div>
-      <chat-preview v-for="message in userInfo.userMessages" :message="message"/>
+      <chat-preview v-for="message in userInfo.userMessages" :message="message" :key="message.id" />
       <div @click="this.isChatsBlockVisible = false" class="friends-icon-container"><i class="fas fa-user-friends"></i></div>
     </div>
 
@@ -31,7 +31,7 @@
       <div class="profile-detail-container-title">
         Друзья
       </div>
-      <friend v-for="friend in userInfo.userFriends" :friend="friend"/>
+      <friend v-for="friend in userInfo.userFriends" :friend="friend" :key="friend.id" />
       <div @click="this.isChatsBlockVisible = true" class="chats-icon-container"><i class="far fa-comments"></i></div>
     </div>
   </div>
@@ -39,11 +39,12 @@
 
 <script>
 import axios from 'axios';
-import EventTextInfo from '@/components/EventTextInfo.vue';
-import ChatPreview from '@/components/ChatPreview.vue';
-import Friend from '@/components/Friend.vue';
+import EventTextInfo from '@/components/events/EventTextInfo.vue';
+import ChatPreview from '@/components/users/ChatPreview.vue';
+import Friend from '@/components/users/Friend.vue';
 
 export default {
+  name: 'Profile',
   components: {
     EventTextInfo, ChatPreview, Friend
   },

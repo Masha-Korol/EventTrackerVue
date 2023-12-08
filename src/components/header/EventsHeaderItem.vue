@@ -1,6 +1,9 @@
 <template>
   <div class="menu-container">
-    <div class="header-item-text"><a href="../concerts-page/concerts.html">Мероприятия</a></div>
+    <div class="header-item-text">
+      <router-link to="/">Мероприятия</router-link>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 

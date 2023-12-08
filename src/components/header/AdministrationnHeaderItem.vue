@@ -1,6 +1,8 @@
 <template>
   <div id="admin-page-link-container" class="admin-page-link-container">
-    <text class="header-item-text profile-text"><a href="../administration-page/administration.html">Административная страница</a></text>
+    <text class="header-item-text profile-text">
+      <router-link to="/administration">Административная страница</router-link>
+    </text>
   </div>
 </template>
 

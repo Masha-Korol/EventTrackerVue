@@ -8,13 +8,12 @@
 
 <script>
 export default {
-  name: 'administrationn-header-item'
+  name: 'administration-header-item'
 }
 </script>
 
 <style scoped>
 .admin-page-link-container {
-  display: none;
   flex-direction: row;
   justify-content: center;
   align-items: center;

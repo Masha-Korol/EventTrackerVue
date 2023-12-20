@@ -7,7 +7,7 @@
     </div>
     <events-header-item/>
     <recommendations-header-item/>
-    <administrationn-header-item/>
+    <administration-header-item v-if="userInfo.isAdmin"/>
     <logout-header-item/>
   </div>
 
@@ -55,7 +55,8 @@ export default {
         userName: '',
         userEvents: [],
         userMessages: [],
-        userFriends: []
+        userFriends: [],
+        isAdmin: false
       },
       isChatsBlockVisible: true
     }

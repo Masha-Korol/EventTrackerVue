@@ -10,17 +10,105 @@
 
   <div class="data-modification-forms-container">
     <div class="button-container">
-      <button id="add-location-button" class="add-data-button">Добавить локацию</button>
+      <button class="add-data-button" @click="showAddCityDialog = true">Добавить город</button>
     </div>
     <div class="button-container">
-      <button id="add-concert-button" class="add-data-button">Добавить мероприятие</button>
+      <button class="add-data-button" @click="showAddVenueDialog = true">Добавить площадку</button>
+    </div>
+    <div class="button-container">
+      <button class="add-data-button" @click="showAddArtistDialog = true">Добавить исполнителя</button>
+    </div>
+    <div class="button-container">
+      <button class="add-data-button" @click="showAddEventDialog = true">Добавить мероприятие</button>
     </div>
   </div>
+
+  <add-city-dialog v-model:show="showAddCityDialog" @createCity="createCity"/>
+  <add-venue-dialog v-model:show="showAddVenueDialog" @createVenue="createVenue" :cities="cities"/>
+  <add-artist-dialog v-model:show="showAddArtistDialog" @createArtist="createArtist"/>
+  <add-event-dialog v-model:show="showAddEventDialog" @createEvent="createEvent" :venues="venues" :artists="artists"/>
 </template>
 
 <script>
+import AddCityDialog from '@/components/dialogs/AddCityDialog.vue';
+import AddVenueDialog from '@/components/dialogs/AddVenueDialog.vue';
+import AddArtistDialog from '@/components/dialogs/AddArtistDialog.vue';
+import AddEventDialog from '@/components/dialogs/AddEventDialog.vue';
+import axios from 'axios';
+
 export default {
-  name: 'Administration'
+  name: 'Administration',
+  components: {AddEventDialog, AddCityDialog, AddArtistDialog, AddVenueDialog},
+  data() {
+    return {
+      cities: [],
+      venues: [],
+      artists: [],
+      showAddCityDialog: false,
+      showAddVenueDialog: false,
+      showAddArtistDialog: false,
+      showAddEventDialog: false
+    }
+  },
+  methods: {
+    createArtist(newArtist) {
+      axios.post(`http://localhost:9000/api/artists`,
+          {
+            artistName: newArtist.artistName,
+            artistDescription: newArtist.artistDescription
+          }).then((response) => {});
+    },
+    createCity(newCity) {
+      axios.post(`http://localhost:9000/api/cities`,
+          {
+            cityName: newCity.cityName,
+          }).then((response) => {});
+    },
+    createEvent(newEvent) {
+      axios.post(`http://localhost:9000/api/events`,
+          {
+            eventName: newEvent.eventName,
+            eventDescription: newEvent.eventDescription,
+            date: newEvent.date,
+            startTime: newEvent.startTime,
+            artistId: newEvent.artistId,
+            venueId: newEvent.venueId,
+          }).then((response) => {});
+    },
+    createVenue(newVenue) {
+      axios.post(`http://localhost:9000/api/venues`,
+          {
+            venueName: newVenue.venueName,
+            cityId: newVenue.cityId,
+          }).then((response) => {});
+    }
+  },
+  created() {
+    axios
+        .get(`http://localhost:9000/api/cities`)
+        .then((response) => {
+          this.cities = response.data;
+        })
+        .catch((e) => {
+          console.log(`Error: ${JSON.stringify(e)}`);
+        });
+    axios
+        .get(`http://localhost:9000/api/venues`)
+        .then((response) => {
+          this.venues = response.data;
+        })
+        .catch((e) => {
+          console.log(`Error: ${JSON.stringify(e)}`);
+        });
+    axios
+        .get(`http://localhost:9000/api/artists`)
+        .then((response) => {
+          this.artists = response.data;
+        })
+        .catch((e) => {
+          console.log(`Error: ${JSON.stringify(e)}`);
+        });
+  }
 }
 </script>
 
@@ -42,6 +130,7 @@ export default {
   padding: 10px;
   font-size: 20px;
   min-width: 300px;
+  cursor: pointer;
 }
 
 /* form popups */

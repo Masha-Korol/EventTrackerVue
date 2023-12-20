@@ -16,7 +16,7 @@
 
       <rating :mark="event.mark" @onMarkChange="onMarkChange"/>
 
-      <comments :event-comments="event.eventComments" @createComment="onCommentCreate"/>
+      <comments :event-comments="event.eventComments" @createComment="createComment"/>
     </div>
 
     <div class="concert-description">
@@ -74,7 +74,7 @@ export default {
       this.event.willGo = !this.event.willGo;
       axios.get(`http://localhost:9000/api/events/${this.eventId}/state`);
     },
-    onCommentCreate(newComment) {
+    createComment(newComment) {
       axios.post(`http://localhost:9000/api/comments`, {text: newComment.commentText, eventId: this.eventId})
           .then((response) => {
             this.event.eventComments.push(response.data);

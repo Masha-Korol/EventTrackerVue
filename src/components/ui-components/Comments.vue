@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
           <div class="comment-form-button-container">
-            <button @click="onCommentCreate" id="post" class="btn-comment-form">Отправить</button>
+            <button @click="createComment" id="post" class="btn-comment-form">Отправить</button>
           </div>
         </div>
       </form>
@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    onCommentCreate(event) {
+    createComment(event) {
       event.preventDefault();
       this.$emit('createComment', this.newComment);
       this.newComment.commentText = '';

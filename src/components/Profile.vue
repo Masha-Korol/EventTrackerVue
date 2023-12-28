@@ -31,7 +31,7 @@
       <div class="profile-detail-container-title">
         Друзья
       </div>
-      <friend v-for="friend in userInfo.userFriends" :friend="friend" :key="friend.id" />
+      <friend v-for="friend in userInfo.userFriends" :friend="friend" :key="friend.id" @sendFriendRequest="sendFriendRequest" @cancelFriendRequest="cancelFriendRequest" />
       <div @click="this.isChatsBlockVisible = true" class="chats-icon-container"><i class="far fa-comments"></i></div>
     </div>
   </div>
@@ -62,7 +62,16 @@ export default {
     }
   },
   methods: {
-
+    sendFriendRequest(userId) {
+      axios
+          .patch(`http://localhost:9000/api/users`, {userId, friendUser: true})
+          .then((response) => {});
+    },
+    cancelFriendRequest(userId) {
+      axios
+          .patch(`http://localhost:9000/api/users`, {userId, friendUser: false})
+          .then((response) => {});
+    }
   },
   created() {
     axios
@@ -150,26 +159,6 @@ export default {
   line-height: 40px;
   color: #FFFFFF;
   text-align: center;
-}
-
-.friend-block {
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 10px;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  background: rgba(28, 28, 28, 0.8);
-}
-
-.friend-block-username {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 40px;
-  line-height: 40px;
-  color: #FFFFFF;
-  text-align: left;
 }
 
 .chats-icon-container {

@@ -1,21 +1,7 @@
 <template>
   <div class="header-container">
     <div class="title-container">
-      <text class="title-text">Мероприятия: </text>
-    </div>
-    <div class="menu-container">
-      <div class="select-city">
-        <select>
-          <option value="0">в любом городе</option>
-          <option value="1">Москва</option>
-          <option value="2">Воронеж</option>
-          <option value="3">Владивосток</option>
-          <option value="4">Сочи</option>
-        </select>
-      </div>
-    </div>
-    <div class="menu-container">
-      <input type="text" id="search-field" class="search-field" placeholder="Введите название мероприятия...">
+      <text class="title-text">Мероприятия</text>
     </div>
     <recommendations-header-item/>
     <profile-header-item/>

@@ -11,7 +11,7 @@
       <form id="algin-form">
         <div class="form-group">
           <h4 class="leave-comment-h4">Оставьте коментарий</h4>
-          <textarea v-model="newComment.commentText" name="msg" ref="commentTexterea" cols="30" rows="5" class="form-control" required></textarea>
+          <textarea v-model="newComment.commentText" v-bind:class="isCommentEmpty ? 'comment-text-empty-error' : ''" name="msg" ref="commentTexterea" cols="30" rows="5" class="form-control" required></textarea>
         </div>
         <div class="form-group">
           <div class="comment-form-button-container">
@@ -39,14 +39,23 @@ export default {
     return {
       newComment: {
         commentText: ''
-      }
+      },
+      isCommentEmpty: false
     }
   },
   methods: {
     createComment(event) {
       event.preventDefault();
-      this.$emit('createComment', this.newComment);
-      this.newComment.commentText = '';
+
+      this.validateForm();
+
+      if (!this.isCommentEmpty) {
+        this.$emit('createComment', this.newComment);
+        this.newComment.commentText = '';
+      }
+    },
+    validateForm() {
+      this.isCommentEmpty = !this.newComment.commentText;
     }
   }
 }
@@ -169,5 +178,9 @@ textarea:invalid {
 
 textarea:valid {
   border: 2px solid black;
+}
+
+.comment-text-empty-error {
+  border: 3px solid #f00 !important;
 }
 </style>

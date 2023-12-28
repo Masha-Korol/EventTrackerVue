@@ -17,6 +17,12 @@
             </select>
 
             <input type="submit" value="Отправить" @click="createVenue">
+
+            <p v-if="errors.length">
+              <ul>
+                <li v-for="error in errors" class="error-text">{{ error }}</li>
+              </ul>
+            </p>
           </form>
         </div>
       </div>
@@ -42,16 +48,32 @@ export default {
       newVenue: {
         venueName: '',
         cityId: ''
-      }
+      },
+      errors: [],
     }
   },
   methods: {
     createVenue(event) {
       event.preventDefault();
-      this.$emit('createVenue', this.newVenue);
-      this.newVenue.venueName = '';
-      this.newVenue.cityId = '';
-      this.$emit('update:show', false);
+
+      this.validateForm();
+
+      if (this.errors.length === 0) {
+        this.$emit('createVenue', this.newVenue);
+        this.newVenue.venueName = '';
+        this.newVenue.cityId = '';
+        this.$emit('update:show', false);
+      }
+    },
+    validateForm() {
+      this.errors = [];
+
+      if (!this.newVenue.venueName) {
+        this.errors.push('Необходимо указать название площадки.');
+      }
+      if (!this.newVenue.cityId) {
+        this.errors.push('Необходимо указать город.');
+      }
     }
   }
 }
@@ -135,5 +157,9 @@ input[type=submit]:hover {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+}
+
+.error-text {
+  color: red;
 }
 </style>

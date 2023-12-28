@@ -1,12 +1,4 @@
 <template>
-<!--  <event-list/>-->
-  <!--<event-info/>-->
-<!--  <profile/>-->
-  <!--<recommendations/>-->
-  <!--<user-profile/>-->
-  <!--<chat/>-->
-  <!--<administration/>-->
-<!--  <router-link to="/recommendations">Go to recommendations</router-link>-->
   <router-view/>
 </template>
 

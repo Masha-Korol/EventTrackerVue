@@ -19,7 +19,9 @@
       <div class="recommendations-detail-container-title">
         Возмножно, вы подружитесь
       </div>
-      <recommended-user v-for="user in recommendations.recommendedUsers" :user="user" :key="user.id" />
+      <recommended-user v-for="user in recommendations.recommendedUsers" :user="user" :key="user.id"
+                        @sendFriendRequest="sendFriendRequest"
+                        @cancelFriendRequest="cancelFriendRequest"/>
     </div>
   </div>
 </template>
@@ -40,6 +42,18 @@ export default {
         recommendedUsers: [],
         recommendedEvents: []
       }
+    }
+  },
+  methods: {
+    sendFriendRequest(userId) {
+      axios
+          .patch(`http://localhost:9000/api/users`, {userId, friendUser: true})
+          .then((response) => {});
+    },
+    cancelFriendRequest(userId) {
+      axios
+          .patch(`http://localhost:9000/api/users`, {userId, friendUser: false})
+          .then((response) => {});
     }
   },
   created() {
@@ -70,6 +84,8 @@ export default {
   margin-top: 40px;
   width: 40%;
   min-width: 40%;
+  height: max-content;
+  color: #FFFFFF;
 }
 
 .recommendations-detail-container-title {

@@ -15,6 +15,12 @@
             <input type="text" id="artist-description" name="artistDescription" placeholder="" v-model="newArtist.artistDescription">
 
             <input type="submit" value="Отправить" @click="createArtist">
+
+            <p v-if="errors.length">
+              <ul>
+                <li v-for="error in errors" class="error-text">{{ error }}</li>
+              </ul>
+            </p>
           </form>
         </div>
       </div>
@@ -36,16 +42,29 @@ export default {
       newArtist: {
         artistName: '',
         artistDescription: ''
-      }
+      },
+      errors: [],
     }
   },
   methods: {
     createArtist(event) {
       event.preventDefault();
-      this.$emit('createArtist', this.newArtist);
-      this.newArtist.artistName = '';
-      this.newArtist.artistDescription = '';
-      this.$emit('update:show', false);
+
+      this.validateForm();
+
+      if (this.errors.length === 0) {
+        this.$emit('createArtist', this.newArtist);
+        this.newArtist.artistName = '';
+        this.newArtist.artistDescription = '';
+        this.$emit('update:show', false);
+      }
+    },
+    validateForm() {
+      this.errors = [];
+
+      if (!this.newArtist.artistName) {
+        this.errors.push('Необходимо указать название исполнителя или группы.');
+      }
     }
   }
 }
@@ -129,5 +148,9 @@ input[type=submit]:hover {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+}
+
+.error-text {
+  color: red;
 }
 </style>

@@ -12,6 +12,12 @@
             <input type="text" id="city-name" name="cityName" placeholder="" v-model="newCity.cityName">
 
             <input type="submit" value="Отправить" @click="createCity">
+
+            <p v-if="errors.length">
+              <ul>
+                <li v-for="error in errors" class="error-text">{{ error }}</li>
+              </ul>
+            </p>
           </form>
         </div>
       </div>
@@ -32,15 +38,28 @@ export default {
     return {
       newCity: {
         cityName: ''
-      }
+      },
+      errors: []
     }
   },
   methods: {
     createCity(event) {
       event.preventDefault();
-      this.$emit('createCity', this.newCity);
-      this.newCity.cityName = '';
-      this.$emit('update:show', false);
+
+      this.validateForm();
+
+      if (this.errors.length === 0) {
+        this.$emit('createCity', this.newCity);
+        this.newCity.cityName = '';
+        this.$emit('update:show', false);
+      }
+    },
+    validateForm() {
+      this.errors = [];
+
+      if (!this.newCity.cityName) {
+        this.errors.push('Необходимо указать название города.');
+      }
     }
   }
 }
@@ -124,5 +143,9 @@ input[type=submit]:hover {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+}
+
+.error-text {
+  color: red;
 }
 </style>

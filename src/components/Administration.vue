@@ -35,6 +35,7 @@ import AddVenueDialog from '@/components/dialogs/AddVenueDialog.vue';
 import AddArtistDialog from '@/components/dialogs/AddArtistDialog.vue';
 import AddEventDialog from '@/components/dialogs/AddEventDialog.vue';
 import axios from 'axios';
+import FormData from 'form-data';
 
 export default {
   name: 'Administration',
@@ -51,20 +52,41 @@ export default {
     }
   },
   methods: {
+    createCity(newCity) {
+      axios.post(`http://localhost:9000/api/cities`,
+          {
+            cityName: newCity.cityName,
+          }).then((response) => {
+        this.cities.push(response);
+      });
+    },
+    createVenue(newVenue) {
+      axios.post(`http://localhost:9000/api/venues`,
+          {
+            venueName: newVenue.venueName,
+            cityId: newVenue.cityId,
+          }).then((response) => {
+        this.venues.push(response);
+      });
+    },
     createArtist(newArtist) {
       axios.post(`http://localhost:9000/api/artists`,
           {
             artistName: newArtist.artistName,
             artistDescription: newArtist.artistDescription
-          }).then((response) => {});
-    },
-    createCity(newCity) {
-      axios.post(`http://localhost:9000/api/cities`,
-          {
-            cityName: newCity.cityName,
-          }).then((response) => {});
+          }).then((response) => {
+            this.artists.push(response);
+      });
     },
     createEvent(newEvent) {
+      const form = new FormData();
+      form.append('file', newEvent.posterFile);
+      axios.post('http://localhost:9000/api/events/posters', form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      });
+
       axios.post(`http://localhost:9000/api/events`,
           {
             eventName: newEvent.eventName,
@@ -72,14 +94,7 @@ export default {
             date: newEvent.date,
             startTime: newEvent.startTime,
             artistId: newEvent.artistId,
-            venueId: newEvent.venueId,
-          }).then((response) => {});
-    },
-    createVenue(newVenue) {
-      axios.post(`http://localhost:9000/api/venues`,
-          {
-            venueName: newVenue.venueName,
-            cityId: newVenue.cityId,
+            venueId: newEvent.venueId
           }).then((response) => {});
     }
   },

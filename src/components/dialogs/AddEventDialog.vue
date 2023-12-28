@@ -14,6 +14,10 @@
             <label for="event-description">Описание</label>
             <input type="text" id="event-description" name="eventDescription" placeholder="" v-model="newEvent.eventDescription">
 
+            <label for="poster-file">Постер мероприятия</label><br><br>
+            <input id="poster-file" type="file" @change="onFileUpload($event)">
+            <br><br>
+
             <label for="date">Дата</label>
             <input type="text" id="date" name="date" placeholder="" v-model="newEvent.date">
 
@@ -31,6 +35,12 @@
             </select>
 
             <input type="submit" value="Отправить" @click="createEvent">
+
+            <p v-if="errors.length">
+              <ul>
+                <li v-for="error in errors" class="error-text">{{ error }}</li>
+              </ul>
+            </p>
           </form>
         </div>
       </div>
@@ -39,8 +49,12 @@
 </template>
 
 <script>
+import FileUpload from 'primevue/fileupload';
+import {ref} from 'vue';
+
 export default {
   name: 'add-event-dialog',
+  components: {FileUpload},
   props: {
     show: {
       type: Boolean,
@@ -63,21 +77,57 @@ export default {
         date: '',
         startTime: '',
         artistId: '',
-        venueId: ''
-      }
+        venueId: '',
+        posterFile: undefined
+      },
+      errors: [],
     }
   },
   methods: {
     createEvent(event) {
       event.preventDefault();
-      this.$emit('createEvent', this.newEvent);
-      this.newEvent.eventName = '';
-      this.newEvent.eventDescription = '';
-      this.newEvent.date = '';
-      this.newEvent.startTime = '';
-      this.newEvent.artistId = '';
-      this.newEvent.venueId = '';
-      this.$emit('update:show', false);
+
+      this.validateForm();
+
+      if (this.errors.length === 0) {
+        this.$emit('createEvent', this.newEvent);
+        this.newEvent.eventName = '';
+        this.newEvent.eventDescription = '';
+        this.newEvent.date = '';
+        this.newEvent.startTime = '';
+        this.newEvent.artistId = '';
+        this.newEvent.venueId = '';
+        this.newEvent.posterFile = undefined;
+        this.$emit('update:show', false);
+      }
+    },
+    validateForm() {
+      this.errors = [];
+
+      if (!this.newEvent.eventName) {
+        this.errors.push('Необходимо указать название мероприятия.');
+      }
+      if (!this.newEvent.eventDescription) {
+        this.errors.push('Необходимо указать описание мероприятия.');
+      }
+      if (!this.newEvent.posterFile) {
+        this.errors.push('Необходимо прикрепить постер мероприятия.');
+      }
+      if (!this.newEvent.date) {
+        this.errors.push('Необходимо указать дату мероприятия.');
+      }
+      if (!this.newEvent.startTime) {
+        this.errors.push('Необходимо указать время начала мероприятия.');
+      }
+      if (!this.newEvent.artistId) {
+        this.errors.push('Необходимо указать исполнителя или группу.');
+      }
+      if (!this.newEvent.venueId) {
+        this.errors.push('Необходимо указать площадку.');
+      }
+    },
+    onFileUpload(event) {
+      this.newEvent.posterFile = event.target.files[0];
     }
   }
 }
@@ -161,5 +211,9 @@ input[type=submit]:hover {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+}
+
+.error-text {
+  color: red;
 }
 </style>

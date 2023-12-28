@@ -1,7 +1,7 @@
 <template>
   <div class="user-block">
-    <div class="user-block-username" @click="this.$router.push({name: 'UserProfile', params: { id: this.user.id}})">{{user.userName}}</div>
-    <div class="user-request-block">Отправить заявку</div>
+    <div class="user-block-username" @click="this.$router.push({name: 'UserProfile', params: { id: user.id}})">{{user.userName}}</div>
+    <div class="user-request-block" @click="modifyFriendRequestState">{{friendRequestWasSent ? 'Убрать из друзей' : 'Добавить в друзья'}}</div>
   </div>
 </template>
 
@@ -11,6 +11,22 @@ export default {
     user: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      friendRequestWasSent: false
+    }
+  },
+  methods: {
+    modifyFriendRequestState() {
+      if (this.friendRequestWasSent) {
+        this.$emit('cancelFriendRequest', this.user.id);
+        this.friendRequestWasSent = false;
+      } else {
+        this.$emit('sendFriendRequest', this.user.id);
+        this.friendRequestWasSent = true;
+      }
     }
   }
 }

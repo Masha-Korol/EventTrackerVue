@@ -79,15 +79,14 @@ export default {
       });
     },
     createEvent(newEvent) {
-
       const form = new FormData();
       form.append('file', newEvent.posterFile);
-
       axios.post('http://localhost:9000/api/events/posters', form, {
         headers: {
           "Content-Type": "multipart/form-data",
         }
       });
+
       axios.post(`http://localhost:9000/api/events`,
           {
             eventName: newEvent.eventName,

@@ -7,6 +7,7 @@
     </div>
     <events-header-item/>
     <recommendations-header-item/>
+    <profile-header-item/>
   </div>
 
   <div class="profile-container">
@@ -18,10 +19,10 @@
     </div>
 
     <div id="buttons" class="buttons-container">
-      <div @click="onSendFriendRequest" class="user-request-block">
-        {{userInfo.isUserFriend ? 'Убрать из друзей' : 'Отправить заявку'}}
+      <div @click="sendFriendRequest" class="user-request-block">
+        {{userInfo.isUserFriend ? 'Убрать из друзей' : 'Добавить в друзья'}}
       </div>
-      <div class="user-request-block" v-if="userInfo.isUserFriend">Отправить сообщение</div>
+      <div class="user-request-block" v-if="userInfo.isUserFriend" @click="openChat">Отправить сообщение</div>
     </div>
   </div>
 </template>
@@ -46,9 +47,12 @@ export default {
     }
   },
   methods: {
-    onSendFriendRequest() {
-      axios.patch(`http://localhost:9000/api/users`, {userId: this.userId});
+    sendFriendRequest() {
+      axios.patch(`http://localhost:9000/api/users`, {userId: this.userId, friendUser: !this.userInfo.isUserFriend});
       this.userInfo.isUserFriend = !this.userInfo.isUserFriend;
+    },
+    openChat() {
+      this.$router.push({name: 'Chat', params: {userId: this.userId}})
     }
   },
   created() {

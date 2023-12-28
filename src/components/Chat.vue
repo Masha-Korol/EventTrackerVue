@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <div class="title-container">
-      <text class="title-text">EventTracker</text>
+      <text class="title-text">Чат с {{chat.userName}}</text>
     </div>
     <events-header-item/>
     <recommendations-header-item/>
@@ -10,7 +10,7 @@
 
   <div id="chat-container" class="chat-container">
     <div class="chat">
-      <div class="messages-window">
+      <div id="messages-window" class="messages-window">
         <chat-message v-for="message in chat.messages" :message="message" :key="message.id" />
       </div>
 
@@ -19,10 +19,10 @@
           <form id="message-send-form">
             <div class="form-content">
               <div class="message-input-container">
-                <textarea class="form-control" placeholder="Сообщение" name="newmessage"></textarea>
+                <textarea id="message-text" class="form-control" placeholder="Сообщение" name="newmessage"></textarea>
               </div>
               <div class="button-container">
-                <button class="btn btn-primary">Отправить</button>
+                <button class="btn btn-primary send-message-button" @click="sendMessage">Отправить</button>
               </div>
             </div>
           </form>
@@ -42,8 +42,8 @@ export default {
     ChatMessage
   },
   computed: {
-    chatId() {
-      return this.$route.params.id
+    userId() {
+      return this.$route.params.userId
     },
   },
   data() {
@@ -52,12 +52,33 @@ export default {
     }
   },
   methods: {
+    sendMessage(event) {
+      event.preventDefault();
+
+      if (document.getElementById('message-text').value) {
+        axios
+            .post(`http://localhost:9000/api/chats/${this.userId}`,
+                {text: document.getElementById('message-text').value})
+            .then((response) => {
+              this.chat.messages.push(response.data);
+              document.getElementById('message-text').value = '';
+
+              const messagesWindow = document.getElementById('messages-window');
+              const lastMessage = messagesWindow.lastElementChild;
+              lastMessage.scrollIntoView({ behavior: 'smooth' });
+            });
+      }
+    }
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/chats/${this.chatId}`)
+        .get(`http://localhost:9000/api/chats/${this.userId}`)
         .then((response) => {
           this.chat = response.data;
+
+          const messagesWindow = document.getElementById('messages-window');
+          const lastMessage = messagesWindow.lastElementChild;
+          lastMessage.scrollIntoView({ behavior: 'smooth' });
         })
         .catch((e) => {
           console.log(`Error: ${JSON.stringify(e)}`);
@@ -88,7 +109,7 @@ export default {
 /* send message window */
 
 .messages-window {
-  /* overflow: scroll; */
+  overflow: auto;
   display: flex;
   flex-direction: column;
   height: 90%;
@@ -138,5 +159,9 @@ export default {
   display: flex;
   width: 80%;
   align-self: center;
+}
+
+.send-message-button {
+  cursor: pointer;
 }
 </style>

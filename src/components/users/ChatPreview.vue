@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-block" @click="this.$router.push({name: 'Chat', params: { id: this.message.chatId}})">
+  <div class="chat-block" @click="this.$router.push({name: 'Chat', params: {userId: message.userId}})">
     <div class="chat-block-username">{{message.userName}}</div>
     <div class="chat-block-message">{{message.lastMessage}}</div>
   </div>

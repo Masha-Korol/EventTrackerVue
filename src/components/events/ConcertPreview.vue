@@ -1,6 +1,6 @@
 <template>
   <div class="concert-block" @click="this.$router.push({name: 'EventInfo', params: { id: this.event.id}})">
-    <img :src="require(`@/../images/posters/${event.posterFile}`)">
+    <img :src="`data:image/png;base64,${event.posterFile}`">
   </div>
 </template>
 

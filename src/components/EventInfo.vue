@@ -11,7 +11,7 @@
   <div class="concert-container">
     <div class="concert-poster-container">
       <div>
-        <img id="concert-poster" :src="posterLocation">
+        <img id="concert-poster" :src="`data:image/png;base64,${event.posterFile}`">
       </div>
 
       <rating :mark="event.mark" @onMarkChange="onMarkChange"/>
@@ -62,8 +62,7 @@ export default {
         willGo: '',
         eventComments: []
       },
-      commentText: '',
-      posterLocation: ''
+      commentText: ''
     }
   },
   methods: {
@@ -86,7 +85,6 @@ export default {
         .get(`http://localhost:9000/api/events/${this.eventId}`)
         .then((response) => {
           this.event = response.data;
-          this.posterLocation = require(`@/../images/posters/${this.event.posterFile}`);
         })
         .catch((e) => {
           console.log(`Error: ${JSON.stringify(e)}`);

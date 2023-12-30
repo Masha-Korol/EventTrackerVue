@@ -1,16 +1,18 @@
 <template>
   <table>
-    <caption>Города</caption>
+    <caption>Исполнители</caption>
     <thead @click="isTableHidden = !isTableHidden">
     <tr>
       <th>Id</th>
       <th>Название</th>
+      <th>Описание</th>
     </tr>
     </thead>
     <tbody v-if="!isTableHidden">
-    <tr v-for="city in cities">
-      <td>{{ city.id }}</td>
-      <td>{{ city.cityName }}</td>
+    <tr v-for="artist in artists">
+      <td>{{ artist.id }}</td>
+      <td>{{ artist.artistName }}</td>
+      <td>{{ artist.artistDescription }}</td>
     </tr>
     </tbody>
   </table>
@@ -18,12 +20,12 @@
 
 <script>
 export default {
-  name: 'view-cities',
+  name: 'view-artists',
   props: {
-    cities: {
+    artists: {
       type: Array,
       required: true
-    },
+    }
   },
   data() {
     return {
@@ -34,6 +36,7 @@ export default {
 </script>
 
 <style scoped>
+
 table {
   margin: 0 auto;
   color: #333;

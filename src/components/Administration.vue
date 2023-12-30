@@ -22,10 +22,27 @@
       <div class="button-container">
         <button class="add-data-button" @click="showAddEventDialog = true">Добавить мероприятие</button>
       </div>
+      <div class="button-container">
+        <button class="add-data-button" @click="showAddUserDialog = true">Добавить пользователя</button>
+      </div>
     </div>
 
     <div class="data-view-container">
-      <view-cities :cities="cities"/>
+      <div>
+        <view-cities :cities="cities"/>
+      </div>
+      <div>
+        <view-venues :venues="venues"/>
+      </div>
+      <div>
+        <view-artists :artists="artists"/>
+      </div>
+      <div>
+        <view-events :events="events"/>
+      </div>
+      <div>
+        <view-users :users="users"/>
+      </div>
     </div>
   </div>
 
@@ -33,6 +50,7 @@
   <add-venue-dialog v-model:show="showAddVenueDialog" :cities="cities" @createVenue="createVenue"/>
   <add-artist-dialog v-model:show="showAddArtistDialog" @createArtist="createArtist"/>
   <add-event-dialog v-model:show="showAddEventDialog" :venues="venues" :artists="artists" @createEvent="createEvent"/>
+  <add-user-dialog v-model:show="showAddUserDialog" @createUser="createUser"/>
 </template>
 
 <script>
@@ -40,28 +58,34 @@ import AddCityDialog from '@/components/dialogs/AddCityDialog.vue';
 import AddVenueDialog from '@/components/dialogs/AddVenueDialog.vue';
 import AddArtistDialog from '@/components/dialogs/AddArtistDialog.vue';
 import AddEventDialog from '@/components/dialogs/AddEventDialog.vue';
+import AddUserDialog from '@/components/dialogs/AddUserDialog.vue';
 import ViewCities from '@/components/administration/ViewCities.vue';
+import ViewVenues from '@/components/administration/ViewVenues.vue';
+import ViewArtists from '@/components/administration/ViewArtists.vue';
+import ViewEvents from '@/components/administration/ViewEvents.vue';
+import ViewUsers from '@/components/administration/ViewUsers.vue';
 import axios from 'axios';
 import FormData from 'form-data';
+import {authHeader, handleAxiosError} from '@/util/authentication-helper';
 
 export default {
   name: 'Administration',
-  components: {AddEventDialog, AddCityDialog, AddArtistDialog, AddVenueDialog, ViewCities},
+  components: {
+    AddCityDialog, AddVenueDialog, AddArtistDialog, AddEventDialog, AddUserDialog,
+    ViewCities, ViewVenues, ViewArtists, ViewEvents, ViewUsers
+  },
   data() {
     return {
       cities: [],
       venues: [],
       artists: [],
+      events: [],
+      users: [],
       showAddCityDialog: false,
       showAddVenueDialog: false,
       showAddArtistDialog: false,
       showAddEventDialog: false,
-      items: [
-        { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-        { age: 38, first_name: 'Jami', last_name: 'Carney' }
-      ]
+      showAddUserDialog: false
     }
   },
   methods: {
@@ -69,27 +93,35 @@ export default {
       axios.post(`http://localhost:9000/api/cities`,
           {
             cityName: newCity.cityName,
-          }).then((response) => {
-        this.cities.push(response.data);
-      });
+          },
+          {headers: authHeader()})
+          .then((response) => {
+            this.cities.push(response.data);
+          })
+          .catch(handleAxiosError);
     },
     createVenue(newVenue) {
       axios.post(`http://localhost:9000/api/venues`,
           {
             venueName: newVenue.venueName,
             cityId: newVenue.cityId,
-          }).then((response) => {
-        this.venues.push(response.data);
-      });
+          },
+          {headers: authHeader()})
+          .then((response) => {
+            this.venues.push(response.data);
+          })
+          .catch(handleAxiosError);
     },
     createArtist(newArtist) {
       axios.post(`http://localhost:9000/api/artists`,
           {
             artistName: newArtist.artistName,
             artistDescription: newArtist.artistDescription
-          }).then((response) => {
+          }, {headers: authHeader()})
+          .then((response) => {
             this.artists.push(response.data);
-      });
+          })
+          .catch(handleAxiosError);
     },
     createEvent(newEvent) {
       const eventName = newEvent.eventName;
@@ -118,35 +150,59 @@ export default {
               eventPosterFileName: eventPosterFileName,
               venueId: venueId,
               artistId: artistId
-            }).then((response) => {});
-      });
+            },
+            {headers: authHeader()})
+            .then((response) => {
+              this.events.push(response.data);
+            })
+            .catch(handleAxiosError);
+      }).catch(handleAxiosError);
+    },
+    createUser(newUser) {
+      axios.post(`http://localhost:9000/api/users`,
+          {
+            userName: newUser.userName,
+            password: newUser.password,
+            isAdmin: newUser.isAdmin
+          },
+          {headers: authHeader()})
+          .then((response) => {
+            this.users.push(response.data);
+          })
+          .catch(handleAxiosError);
     }
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/cities`)
+        .get(`http://localhost:9000/api/cities`, {headers: authHeader()})
         .then((response) => {
           this.cities = response.data;
         })
-        .catch((e) => {
-          console.log(`Error: ${JSON.stringify(e)}`);
-        });
+        .catch(handleAxiosError);
     axios
-        .get(`http://localhost:9000/api/venues`)
+        .get(`http://localhost:9000/api/venues`, {headers: authHeader()})
         .then((response) => {
           this.venues = response.data;
         })
-        .catch((e) => {
-          console.log(`Error: ${JSON.stringify(e)}`);
-        });
+        .catch(handleAxiosError);
     axios
-        .get(`http://localhost:9000/api/artists`)
+        .get(`http://localhost:9000/api/artists`, {headers: authHeader()})
         .then((response) => {
           this.artists = response.data;
         })
-        .catch((e) => {
-          console.log(`Error: ${JSON.stringify(e)}`);
-        });
+        .catch(handleAxiosError);
+    axios
+        .get(`http://localhost:9000/api/events/detailed`, {headers: authHeader()})
+        .then((response) => {
+          this.events = response.data;
+        })
+        .catch(handleAxiosError);
+    axios
+        .get(`http://localhost:9000/api/users/get/all`, {headers: authHeader()})
+        .then((response) => {
+          this.users = response.data;
+        })
+        .catch(handleAxiosError);
   }
 }
 </script>
@@ -156,6 +212,12 @@ export default {
 .administration-stuff-container {
   display: flex;
   flex-direction: row;
+}
+
+.data-view-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5%;
 }
 
 /* buttons block */

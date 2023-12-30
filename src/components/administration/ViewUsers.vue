@@ -1,16 +1,18 @@
 <template>
   <table>
-    <caption>Города</caption>
+    <caption>Пользователи</caption>
     <thead @click="isTableHidden = !isTableHidden">
     <tr>
       <th>Id</th>
-      <th>Название</th>
+      <th>Имя</th>
+      <th>Админ</th>
     </tr>
     </thead>
     <tbody v-if="!isTableHidden">
-    <tr v-for="city in cities">
-      <td>{{ city.id }}</td>
-      <td>{{ city.cityName }}</td>
+    <tr v-for="user in users">
+      <td>{{ user.id }}</td>
+      <td>{{ user.userName }}</td>
+      <td>{{ user.isAdmin ? 'админ' : '' }}</td>
     </tr>
     </tbody>
   </table>
@@ -18,9 +20,9 @@
 
 <script>
 export default {
-  name: 'view-cities',
+  name: 'view-users',
   props: {
-    cities: {
+    users: {
       type: Array,
       required: true
     },

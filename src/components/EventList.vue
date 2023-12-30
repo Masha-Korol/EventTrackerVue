@@ -15,6 +15,7 @@
 <script>
 import ConcertPreview from '@/components/events/ConcertPreview.vue';
 import axios from 'axios';
+import {authHeader, handleAxiosError} from '@/util/authentication-helper';
 
 export default {
   name: 'EventList',
@@ -31,13 +32,11 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/events`)
+        .get(`http://localhost:9000/api/events`, {headers: authHeader()})
         .then((response) => {
           this.events = response.data;
         })
-        .catch((e) => {
-          console.log(`Error: ${JSON.stringify(e)}`);
-        });
+        .catch(handleAxiosError);
   }
 }
 </script>

@@ -35,6 +35,7 @@
 <script>
 import axios from 'axios';
 import ChatMessage from '@/components/users/ChatMessage.vue';
+import {authHeader, handleAxiosError} from '@/util/authentication-helper';
 
 export default {
   name: 'Chat',
@@ -58,21 +59,25 @@ export default {
       if (document.getElementById('message-text').value) {
         axios
             .post(`http://localhost:9000/api/chats/${this.userId}`,
-                {text: document.getElementById('message-text').value})
+                {text: document.getElementById('message-text').value},
+                {headers: authHeader()})
             .then((response) => {
               this.chat.messages.push(response.data);
               document.getElementById('message-text').value = '';
 
               const messagesWindow = document.getElementById('messages-window');
               const lastMessage = messagesWindow.lastElementChild;
-              lastMessage.scrollIntoView({ behavior: 'smooth' });
-            });
+              if (lastMessage) {
+                lastMessage.scrollIntoView({ behavior: 'smooth' });
+              }
+            })
+            .catch(handleAxiosError);
       }
     }
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/chats/${this.userId}`)
+        .get(`http://localhost:9000/api/chats/${this.userId}`, {headers: authHeader()})
         .then((response) => {
           this.chat = response.data;
 
@@ -80,9 +85,7 @@ export default {
           const lastMessage = messagesWindow.lastElementChild;
           lastMessage.scrollIntoView({ behavior: 'smooth' });
         })
-        .catch((e) => {
-          console.log(`Error: ${JSON.stringify(e)}`);
-        });
+        .catch(handleAxiosError);
   }
 }
 </script>

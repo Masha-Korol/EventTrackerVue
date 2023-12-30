@@ -15,7 +15,7 @@
             <input type="text" id="event-description" name="eventDescription" placeholder="" v-model="newEvent.eventDescription">
 
             <label for="poster-file">Постер мероприятия</label><br><br>
-            <input id="poster-file" type="file" @change="onFileUpload($event)">
+            <input id="poster-file" type="file" accept="image/*" @change="onFileUpload($event)">
             <br><br>
 
             <label for="date">Дата</label>

@@ -30,6 +30,7 @@
 <script>
 import axios from 'axios';
 import EventTextInfo from '@/components/events/EventTextInfo.vue';
+import {authHeader, handleAxiosError} from '@/util/authentication-helper';
 
 export default {
   components: {
@@ -48,7 +49,9 @@ export default {
   },
   methods: {
     sendFriendRequest() {
-      axios.patch(`http://localhost:9000/api/users`, {userId: this.userId, friendUser: !this.userInfo.isUserFriend});
+      axios.patch(`http://localhost:9000/api/users`, {userId: this.userId, friendUser: !this.userInfo.isUserFriend},
+          {headers: authHeader()})
+          .catch(handleAxiosError);
       this.userInfo.isUserFriend = !this.userInfo.isUserFriend;
     },
     openChat() {
@@ -57,13 +60,11 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/users/${this.userId}`)
+        .get(`http://localhost:9000/api/users/${this.userId}`, {headers: authHeader()})
         .then((response) => {
           this.userInfo = response.data;
         })
-        .catch((e) => {
-          console.log(`Error: ${JSON.stringify(e)}`);
-        });
+        .catch(handleAxiosError);
   }
 }
 </script>

@@ -1,16 +1,18 @@
 <template>
   <table>
-    <caption>Города</caption>
+    <caption>Площадки</caption>
     <thead @click="isTableHidden = !isTableHidden">
     <tr>
       <th>Id</th>
       <th>Название</th>
+      <th>Город</th>
     </tr>
     </thead>
     <tbody v-if="!isTableHidden">
-    <tr v-for="city in cities">
-      <td>{{ city.id }}</td>
-      <td>{{ city.cityName }}</td>
+    <tr v-for="venue in venues">
+      <td>{{ venue.id }}</td>
+      <td>{{ venue.venueName }}</td>
+      <td>{{ venue.cityName }}</td>
     </tr>
     </tbody>
   </table>
@@ -18,12 +20,12 @@
 
 <script>
 export default {
-  name: 'view-cities',
+  name: 'view-venues',
   props: {
-    cities: {
+    venues: {
       type: Array,
       required: true
-    },
+    }
   },
   data() {
     return {
@@ -34,6 +36,7 @@ export default {
 </script>
 
 <style scoped>
+
 table {
   margin: 0 auto;
   color: #333;

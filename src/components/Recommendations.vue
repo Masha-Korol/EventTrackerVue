@@ -31,6 +31,7 @@ import axios from 'axios';
 import EventTextInfo from '@/components/events/EventTextInfo.vue';
 import RecommendedUser from '@/components/users/RecommendedUser.vue';
 import {authHeader, handleAxiosError} from '@/util/authentication-helper';
+import {BACKEND_URL} from '@/config';
 
 export default {
   name: 'Recommendations',
@@ -48,7 +49,7 @@ export default {
   methods: {
     sendFriendRequest(userId) {
       axios
-          .patch(`http://localhost:7010/api/users`, {userId, friendUser: true}, {headers: authHeader()})
+          .patch(`${BACKEND_URL}/users`, {userId, friendUser: true}, {headers: authHeader()})
           .then((response) => {})
           .catch((e) => {
             console.log(`Error: ${JSON.stringify(e)}`);
@@ -57,14 +58,14 @@ export default {
     },
     cancelFriendRequest(userId) {
       axios
-          .patch(`http://localhost:7010/api/users`, {userId, friendUser: false}, {headers: authHeader()})
+          .patch(`${BACKEND_URL}/users`, {userId, friendUser: false}, {headers: authHeader()})
           .then((response) => {})
           .catch(handleAxiosError);
     }
   },
   created() {
     axios
-        .get(`http://localhost:7010/api/recommendations`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/recommendations`, {headers: authHeader()})
         .then((response) => {
           this.recommendations = response.data;
         })

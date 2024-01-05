@@ -31,6 +31,7 @@
 import axios from 'axios';
 import EventTextInfo from '@/components/events/EventTextInfo.vue';
 import {authHeader, handleAxiosError} from '@/util/authentication-helper';
+import {BACKEND_URL} from '@/config';
 
 export default {
   components: {
@@ -49,7 +50,7 @@ export default {
   },
   methods: {
     sendFriendRequest() {
-      axios.patch(`http://localhost:7010/api/users`, {userId: this.userId, friendUser: !this.userInfo.isUserFriend},
+      axios.patch(`${BACKEND_URL}/users`, {userId: this.userId, friendUser: !this.userInfo.isUserFriend},
           {headers: authHeader()})
           .catch(handleAxiosError);
       this.userInfo.isUserFriend = !this.userInfo.isUserFriend;
@@ -60,7 +61,7 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:7010/api/users/${this.userId}`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/users/${this.userId}`, {headers: authHeader()})
         .then((response) => {
           this.userInfo = response.data;
         })

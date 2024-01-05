@@ -17,6 +17,7 @@
 <script>
 import axios from 'axios';
 import {authenticateUser} from '@/util/authentication-helper';
+import {BACKEND_URL} from '@/config';
 
 export default {
   data() {
@@ -30,7 +31,7 @@ export default {
     login(event) {
       event.preventDefault();
 
-      axios.post(`http://localhost:7010/api/users/login`,
+      axios.post(`${BACKEND_URL}/users/login`,
           {
             userName: this.userName,
             password: this.password,
@@ -41,7 +42,7 @@ export default {
           })
           .catch((e) => {
             this.error = true;
-            if (e.response.status === 401 || e.response.status === 403) {
+            if (e.response && (e.response.status === 401 || e.response.status === 403)) {
               localStorage.removeItem('user');
             }
           });

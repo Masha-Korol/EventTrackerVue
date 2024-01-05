@@ -36,6 +36,7 @@
 import axios from 'axios';
 import ChatMessage from '@/components/users/ChatMessage.vue';
 import {authHeader, handleAxiosError} from '@/util/authentication-helper';
+import {BACKEND_URL} from '@/config';
 
 export default {
   name: 'Chat',
@@ -58,7 +59,7 @@ export default {
 
       if (document.getElementById('message-text').value) {
         axios
-            .post(`http://localhost:7010/api/chats/${this.userId}`,
+            .post(`${BACKEND_URL}/chats/${this.userId}`,
                 {text: document.getElementById('message-text').value},
                 {headers: authHeader()})
             .then((response) => {
@@ -77,7 +78,7 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:7010/api/chats/${this.userId}`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/chats/${this.userId}`, {headers: authHeader()})
         .then((response) => {
           this.chat = response.data;
 

@@ -1,0 +1,1 @@
+export const BACKEND_URL = 'http://et-backend:7010/api';

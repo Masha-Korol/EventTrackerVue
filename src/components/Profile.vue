@@ -43,6 +43,7 @@ import EventTextInfo from '@/components/events/EventTextInfo.vue';
 import ChatPreview from '@/components/users/ChatPreview.vue';
 import Friend from '@/components/users/Friend.vue';
 import {authHeader, handleAxiosError} from '@/util/authentication-helper';
+import {BACKEND_URL} from '@/config';
 
 export default {
   name: 'Profile',
@@ -65,20 +66,20 @@ export default {
   methods: {
     sendFriendRequest(userId) {
       axios
-          .patch(`http://localhost:7010/api/users`, {userId, friendUser: true}, {headers: authHeader()})
+          .patch(`${BACKEND_URL}/users`, {userId, friendUser: true}, {headers: authHeader()})
           .then((response) => {})
           .catch(handleAxiosError);
     },
     cancelFriendRequest(userId) {
       axios
-          .patch(`http://localhost:7010/api/users`, {userId, friendUser: false}, {headers: authHeader()})
+          .patch(`${BACKEND_URL}/users`, {userId, friendUser: false}, {headers: authHeader()})
           .then((response) => {})
           .catch(handleAxiosError);
     }
   },
   created() {
     axios
-        .get(`http://localhost:7010/api/users`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/users`, {headers: authHeader()})
         .then((response) => {
           this.userInfo = response.data;
         })

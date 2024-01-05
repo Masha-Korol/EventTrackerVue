@@ -67,6 +67,7 @@ import ViewUsers from '@/components/administration/ViewUsers.vue';
 import axios from 'axios';
 import FormData from 'form-data';
 import {authHeader, handleAxiosError} from '@/util/authentication-helper';
+import {BACKEND_URL} from '@/config';
 
 export default {
   name: 'Administration',
@@ -90,7 +91,7 @@ export default {
   },
   methods: {
     createCity(newCity) {
-      axios.post(`http://localhost:7010/api/cities`,
+      axios.post(`${BACKEND_URL}/cities`,
           {
             cityName: newCity.cityName,
           },
@@ -101,7 +102,7 @@ export default {
           .catch(handleAxiosError);
     },
     createVenue(newVenue) {
-      axios.post(`http://localhost:7010/api/venues`,
+      axios.post(`${BACKEND_URL}/venues`,
           {
             venueName: newVenue.venueName,
             cityId: newVenue.cityId,
@@ -113,7 +114,7 @@ export default {
           .catch(handleAxiosError);
     },
     createArtist(newArtist) {
-      axios.post(`http://localhost:7010/api/artists`,
+      axios.post(`${BACKEND_URL}/artists`,
           {
             artistName: newArtist.artistName,
             artistDescription: newArtist.artistDescription
@@ -134,14 +135,14 @@ export default {
       const form = new FormData();
       form.append('file', newEvent.posterFile);
 
-      axios.post('http://localhost:7010/api/events/posters', form, {
+      axios.post('${BACKEND_URL}/events/posters', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       }).then((response) => {
         const eventPosterFileName = response.data.fileName;
 
-        axios.post(`http://localhost:7010/api/events`,
+        axios.post(`${BACKEND_URL}/events`,
             {
               eventName: eventName,
               eventDescription: eventDescription,
@@ -159,7 +160,7 @@ export default {
       }).catch(handleAxiosError);
     },
     createUser(newUser) {
-      axios.post(`http://localhost:7010/api/users`,
+      axios.post(`${BACKEND_URL}/users`,
           {
             userName: newUser.userName,
             password: newUser.password,
@@ -174,31 +175,31 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:7010/api/cities`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/cities`, {headers: authHeader()})
         .then((response) => {
           this.cities = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:7010/api/venues`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/venues`, {headers: authHeader()})
         .then((response) => {
           this.venues = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:7010/api/artists`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/artists`, {headers: authHeader()})
         .then((response) => {
           this.artists = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:7010/api/events/detailed`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/events/detailed`, {headers: authHeader()})
         .then((response) => {
           this.events = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:7010/api/users/get/all`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/users/get/all`, {headers: authHeader()})
         .then((response) => {
           this.users = response.data;
         })

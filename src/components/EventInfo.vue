@@ -39,6 +39,7 @@ import Rating from '@/components/ui-components/Rating.vue';
 import Comments from '@/components/ui-components/Comments.vue';
 import axios from 'axios';
 import {authHeader, handleAxiosError} from '@/util/authentication-helper';
+import {BACKEND_URL} from '@/config';
 
 export default {
   name: 'EventInfo',
@@ -68,17 +69,17 @@ export default {
   },
   methods: {
     onMarkChange(newMark) {
-      axios.patch(`http://localhost:7010/api/events/${this.eventId}/mark`, {newMark: newMark},
+      axios.patch(`${BACKEND_URL}/events/${this.eventId}/mark`, {newMark: newMark},
           {headers: authHeader()})
           .catch(handleAxiosError);
     },
     onIllGoChange() {
       this.event.willGo = !this.event.willGo;
-      axios.get(`http://localhost:7010/api/events/${this.eventId}/state`, {headers: authHeader()})
+      axios.get(`${BACKEND_URL}/events/${this.eventId}/state`, {headers: authHeader()})
           .catch(handleAxiosError);
     },
     createComment(newComment) {
-      axios.post(`http://localhost:7010/api/comments`, {text: newComment.commentText, eventId: this.eventId},
+      axios.post(`${BACKEND_URL}/comments`, {text: newComment.commentText, eventId: this.eventId},
           {headers: authHeader()})
           .then((response) => {
             this.event.eventComments.push(response.data);
@@ -87,7 +88,7 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:7010/api/events/${this.eventId}`, {headers: authHeader()})
+        .get(`${BACKEND_URL}/events/${this.eventId}`, {headers: authHeader()})
         .then((response) => {
           this.event = response.data;
         })

@@ -135,7 +135,7 @@ export default {
       const form = new FormData();
       form.append('file', newEvent.posterFile);
 
-      axios.post('${BACKEND_URL}/events/posters', form, {
+      axios.post(`${BACKEND_URL}/events/posters`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }

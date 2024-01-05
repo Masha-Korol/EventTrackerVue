@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     sendFriendRequest() {
-      axios.patch(`http://localhost:9000/api/users`, {userId: this.userId, friendUser: !this.userInfo.isUserFriend},
+      axios.patch(`http://localhost:7010/api/users`, {userId: this.userId, friendUser: !this.userInfo.isUserFriend},
           {headers: authHeader()})
           .catch(handleAxiosError);
       this.userInfo.isUserFriend = !this.userInfo.isUserFriend;
@@ -60,7 +60,7 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/users/${this.userId}`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/users/${this.userId}`, {headers: authHeader()})
         .then((response) => {
           this.userInfo = response.data;
         })

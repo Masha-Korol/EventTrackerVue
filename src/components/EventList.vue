@@ -32,7 +32,7 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/events`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/events`, {headers: authHeader()})
         .then((response) => {
           this.events = response.data;
         })

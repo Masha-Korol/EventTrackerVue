@@ -48,7 +48,7 @@ export default {
   methods: {
     sendFriendRequest(userId) {
       axios
-          .patch(`http://localhost:9000/api/users`, {userId, friendUser: true}, {headers: authHeader()})
+          .patch(`http://localhost:7010/api/users`, {userId, friendUser: true}, {headers: authHeader()})
           .then((response) => {})
           .catch((e) => {
             console.log(`Error: ${JSON.stringify(e)}`);
@@ -57,14 +57,14 @@ export default {
     },
     cancelFriendRequest(userId) {
       axios
-          .patch(`http://localhost:9000/api/users`, {userId, friendUser: false}, {headers: authHeader()})
+          .patch(`http://localhost:7010/api/users`, {userId, friendUser: false}, {headers: authHeader()})
           .then((response) => {})
           .catch(handleAxiosError);
     }
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/recommendations`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/recommendations`, {headers: authHeader()})
         .then((response) => {
           this.recommendations = response.data;
         })

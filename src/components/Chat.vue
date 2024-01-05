@@ -58,7 +58,7 @@ export default {
 
       if (document.getElementById('message-text').value) {
         axios
-            .post(`http://localhost:9000/api/chats/${this.userId}`,
+            .post(`http://localhost:7010/api/chats/${this.userId}`,
                 {text: document.getElementById('message-text').value},
                 {headers: authHeader()})
             .then((response) => {
@@ -77,7 +77,7 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/chats/${this.userId}`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/chats/${this.userId}`, {headers: authHeader()})
         .then((response) => {
           this.chat = response.data;
 

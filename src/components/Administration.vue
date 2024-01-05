@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     createCity(newCity) {
-      axios.post(`http://localhost:9000/api/cities`,
+      axios.post(`http://localhost:7010/api/cities`,
           {
             cityName: newCity.cityName,
           },
@@ -101,7 +101,7 @@ export default {
           .catch(handleAxiosError);
     },
     createVenue(newVenue) {
-      axios.post(`http://localhost:9000/api/venues`,
+      axios.post(`http://localhost:7010/api/venues`,
           {
             venueName: newVenue.venueName,
             cityId: newVenue.cityId,
@@ -113,7 +113,7 @@ export default {
           .catch(handleAxiosError);
     },
     createArtist(newArtist) {
-      axios.post(`http://localhost:9000/api/artists`,
+      axios.post(`http://localhost:7010/api/artists`,
           {
             artistName: newArtist.artistName,
             artistDescription: newArtist.artistDescription
@@ -134,14 +134,14 @@ export default {
       const form = new FormData();
       form.append('file', newEvent.posterFile);
 
-      axios.post('http://localhost:9000/api/events/posters', form, {
+      axios.post('http://localhost:7010/api/events/posters', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       }).then((response) => {
         const eventPosterFileName = response.data.fileName;
 
-        axios.post(`http://localhost:9000/api/events`,
+        axios.post(`http://localhost:7010/api/events`,
             {
               eventName: eventName,
               eventDescription: eventDescription,
@@ -159,7 +159,7 @@ export default {
       }).catch(handleAxiosError);
     },
     createUser(newUser) {
-      axios.post(`http://localhost:9000/api/users`,
+      axios.post(`http://localhost:7010/api/users`,
           {
             userName: newUser.userName,
             password: newUser.password,
@@ -174,31 +174,31 @@ export default {
   },
   created() {
     axios
-        .get(`http://localhost:9000/api/cities`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/cities`, {headers: authHeader()})
         .then((response) => {
           this.cities = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:9000/api/venues`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/venues`, {headers: authHeader()})
         .then((response) => {
           this.venues = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:9000/api/artists`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/artists`, {headers: authHeader()})
         .then((response) => {
           this.artists = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:9000/api/events/detailed`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/events/detailed`, {headers: authHeader()})
         .then((response) => {
           this.events = response.data;
         })
         .catch(handleAxiosError);
     axios
-        .get(`http://localhost:9000/api/users/get/all`, {headers: authHeader()})
+        .get(`http://localhost:7010/api/users/get/all`, {headers: authHeader()})
         .then((response) => {
           this.users = response.data;
         })

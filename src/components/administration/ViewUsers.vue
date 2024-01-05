@@ -5,6 +5,7 @@
     <tr>
       <th>Id</th>
       <th>Имя</th>
+      <th>Пароль</th>
       <th>Админ</th>
     </tr>
     </thead>
@@ -12,6 +13,7 @@
     <tr v-for="user in users">
       <td>{{ user.id }}</td>
       <td>{{ user.userName }}</td>
+      <td>{{ user.password }}</td>
       <td>{{ user.isAdmin ? 'админ' : '' }}</td>
     </tr>
     </tbody>

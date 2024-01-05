@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'http://et-backend:7010/api';
+export const BACKEND_URL = 'http://event-tracker.duckdns.org:7010/api';

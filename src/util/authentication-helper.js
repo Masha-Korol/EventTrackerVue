@@ -3,9 +3,20 @@ export function authHeader() {
     let user = localStorage.getItem('user');
 
     if (user) {
-        return {'Authorization': 'Basic ' + user};
+        return {'Authorization': `Basic ${user}`};
     } else {
         return {};
+    }
+}
+
+export function getAuthHeader() {
+    // return authorization header with basic auth credentials
+    let user = localStorage.getItem('user');
+
+    if (user) {
+        return `Basic ${user}`;
+    } else {
+        return '';
     }
 }
 

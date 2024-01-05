@@ -66,7 +66,7 @@ import ViewEvents from '@/components/administration/ViewEvents.vue';
 import ViewUsers from '@/components/administration/ViewUsers.vue';
 import axios from 'axios';
 import FormData from 'form-data';
-import {authHeader, handleAxiosError} from '@/util/authentication-helper';
+import {authHeader, getAuthHeader, handleAxiosError} from '@/util/authentication-helper';
 import {BACKEND_URL} from '@/config';
 
 export default {
@@ -138,6 +138,7 @@ export default {
       axios.post(`${BACKEND_URL}/events/posters`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': getAuthHeader()
         }
       }).then((response) => {
         const eventPosterFileName = response.data.fileName;

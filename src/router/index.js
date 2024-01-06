@@ -9,6 +9,9 @@ import Profile from '@/components/Profile.vue';
 import UserProfile from '@/components/UserProfile.vue';
 import Login from '@/components/Login.vue';
 
+const publicPages = ['/login'];
+const adminOnlyPages = ['/administration'];
+
 const routes = [
     { path: '/', name: 'EventList', component: EventList },
     { path: '/recommendations', name: 'Recommendations', component: Recommendations },
@@ -29,14 +32,21 @@ router.beforeEach(authenticationCheck);
 
 function authenticationCheck(to, from, next) {
     // redirect to login page if not logged in and trying to access a restricted page
-    const publicPages = ['/login'];
     const authRequired = !publicPages.includes(to.path);
-    const loggedIn = localStorage.getItem('user');
+    const pageForAdminOnly = adminOnlyPages.includes(to.path);
 
-    if (authRequired && !loggedIn) {
+    const loggedInUser = localStorage.getItem('user');
+
+    if (authRequired && !loggedInUser) {
         return next({
             path: '/login',
             query: {returnUrl: to.path}
+        });
+    }
+
+    if (pageForAdminOnly && loggedInUser && !loggedInUser.isAdmin) {
+        return next({
+            path: '/'
         });
     }
 

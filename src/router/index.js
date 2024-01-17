@@ -44,12 +44,6 @@ function authenticationCheck(to, from, next) {
         });
     }
 
-    if (pageForAdminOnly && loggedInUser && !loggedInUser.isAdmin) {
-        return next({
-            path: '/'
-        });
-    }
-
     next();
 }
 
